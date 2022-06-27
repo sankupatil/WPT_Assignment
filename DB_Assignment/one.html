@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>assignment</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+
+$( ()=>{
+
+    $("#pincode").blur(()=>{
+        let y = $("#pincode").val();
+
+        let ajaxp={
+        data:{ x:y},
+        url:"http://localhost:900/getpincode",
+        type:'get',
+        dataType:"json",
+        success: (output)=>{
+            if(output.status)
+            {
+                $("#msg").text("item details found");
+                $("#area").val(output.pincodedetails.areaname);
+            }
+            else{
+                $("#msg").text("item details not found");
+                $("#area").val("");
+            }
+
+
+        },
+        error:(error)=> { console.log("failure " + error)}
+    };
+    $.ajax(ajaxp);
+ });
+
+
+
+
+
+     $("#add").click(
+        ()=>{
+
+            let input={x:$("#pincode").val(),y:$("#area").val()};
+            let ajaxp=
+            {
+                data:input,
+                url:"http://localhost:900/addpincode",
+                type:'get',
+                dataType:"json",
+                success: (output)=>{
+                if(output)
+                {
+                    $("#msg").text("added Succesfully");
+                   // $("#area").val(output.pincodedetails.areaname);
+                }
+                else{
+                    $("#msg").text("Not Added");
+                    
+                }
+                $("#pincode").val("");
+                $("#areaname").val("");
+            },
+            error:(err)=>{ console.log("failure" +err);}
+        };
+        $.ajax(ajaxp);
+     });
+
+
+
+     $("#update").click(
+        ()=>{
+
+            let input={x:$("#pincode").val(),y:$("#area").val()};
+            let ajaxp=
+            {
+                data:input,
+                url:"http://localhost:900/update",
+                type:'get',
+                dataType:"json",
+                success: (output)=>{
+                if(output)
+                {
+                    $("#msg").text("updated Succesfully");
+                   // $("#area").val(output.pincodedetails.areaname);
+                }
+                else{
+                    $("#msg").text("Not updated");
+                    
+                }
+               // $("#pincode").val("");
+                $("#areaname").val("");
+            },
+            error:(err)=>{ console.log("failure" +err);}
+        };
+        $.ajax(ajaxp);
+     });
+
+
+
+
+
+
+
+       
+});
+
+</script>
+<body>
+    <h1>Location</h1>
+    <br>
+    <input type="text" id="pincode" placeholder="Enter The Pin Code"><span id="msg">Message</span>
+    <br><input type="text" id="area" placeholder="Display area">
+    <br>
+    <input type="button" id="add" value="add Pin code">
+    <br>
+    <input type="button"  id="update" value="update Pin code">
+    
+    
+</body>
+</html>
